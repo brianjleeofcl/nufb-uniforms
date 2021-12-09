@@ -1,6 +1,5 @@
 #! /usr/bin/env node
 
-const http = require('http');
 const https = require('https');
 const { StringDecoder } = require('string_decoder');
 const { createInterface } = require('readline');
@@ -82,7 +81,7 @@ function sendData(data) {
     const user = process.env["USER"];
     const password = process.env["PASSWORD"];
     const url = `${root}/api/game-table/season/`;
-    const req = http.request(url, {
+    const req = https.request(url, {
       method: 'PATCH',
       auth: `${user}:${password}`,
       headers: {

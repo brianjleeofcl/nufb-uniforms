@@ -1,6 +1,6 @@
 #! /usr/bin/env node
 
-const http = require('http');
+const https = require('https');
 const { argv } = require('process');
 const { createInterface } = require('readline');
 
@@ -39,7 +39,7 @@ thenAsk("tweetUrl:", url => uniform.tweetUrl = url.length ? url : null, () => {
 
 function sendRequest() {
   const result = JSON.stringify(uniform);
-  const req = http.request(argv[2], {
+  const req = https.request(argv[2], {
     auth: `${user}:${password}`,
     method: 'PUT',
     headers: {

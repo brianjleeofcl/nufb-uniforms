@@ -1,6 +1,5 @@
 #! /usr/bin/env node
 
-const http = require('http');
 const https = require('https');
 const { StringDecoder } = require('string_decoder');
 const { createInterface } = require('readline');
@@ -23,7 +22,7 @@ const url = `${root}/api/game/${season}/${week}/id`;
 const parser = new StringDecoder('utf8');
 
 try {
-  const req = http.request(url, res => {
+  const req = https.request(url, res => {
     let json = '';
     res.on('data', data => json += parser.write(data));
     res.on('end', () => {
@@ -133,7 +132,7 @@ function sendData(id, data) {
     const user = process.env["USER"];
     const password = process.env["PASSWORD"];
     const url = `${root}/api/game-table/id/${id}`;
-    const req = http.request(url, {
+    const req = https.request(url, {
       method: 'PATCH',
       auth: `${user}:${password}`,
       headers: {
