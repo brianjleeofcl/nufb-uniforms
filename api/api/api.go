@@ -40,7 +40,7 @@ func attachRoutes(router *chi.Mux) {
 			r.Patch("/id/{id}", gameUploadHandler)
 		})
 
-		r.With(basicAuth).Put("/api/uniforms/new", uniformUploadHanlder)
+		r.With(basicAuth).Put("/uniforms/new", uniformUploadHanlder)
 	})
 }
 

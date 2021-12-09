@@ -36,7 +36,7 @@ func upsertionHandler(upsert func([]byte, *http.Request) (int, error)) http.Hand
 			return
 		}
 		resetCache()
-		res.Header().Add("X-Rows-Affected", strconv.Itoa(count))
+		res.Header()["X-Rows-Affected"] = []string{strconv.Itoa(count)}
 		res.WriteHeader(http.StatusOK)
 	}
 }
