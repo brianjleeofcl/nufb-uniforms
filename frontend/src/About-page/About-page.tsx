@@ -2,7 +2,7 @@ import { Box, Markdown, ResponsiveContext } from 'grommet';
 import React, { useContext, useEffect, useState } from 'react';
 import { RespSizes } from '../grommet/utils';
 
-const url = 'https://gist.githubusercontent.com/brianjleeofcl/f26bfd0f02a97b061fec9588d7289eb0/raw/6e834543c617ce14c02432496cb84c03f01e387a/about.md';
+const url = 'https://gist.githubusercontent.com/brianjleeofcl/f26bfd0f02a97b061fec9588d7289eb0/raw/about.md';
 
 export function AboutPage() {
   const size = useContext(ResponsiveContext)
