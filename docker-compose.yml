@@ -1,0 +1,45 @@
+version: "3.9"
+
+services:
+  frontend-build:
+    build: ./frontend
+    image: brianjleeofcl/nufb-uniforms-frontend
+    volumes: [app-build:/frontend/build]
+    profiles: ["build-frontend"]
+  server:
+    build: ./api
+    image: brianjleeofcl/nufb-uniforms-server
+    volumes: [app-build:/api/frontend, cert:/api/cert]
+    ports:
+      - 80:80
+      - 443:443
+    env_file:
+      - ${DB_ENV}
+      - ${API_ENV}
+  seed-data:
+    build: ./data/seed
+    volumes: [seed-storage:/seed/output]
+    profiles: ["data-initial"]
+    depends_on: ["init-db"]
+  init-db:
+    build: ./data/init
+    depends_on: ["db"]
+    profiles: ["data-initial"]
+    volumes: [seed-storage:/db-init/output]
+    env_file:
+      - ${DB_ENV}
+    expose:
+      - 8081
+  db:
+    image: postgres
+    volumes: [database:/var/lib/postgresql/data]
+    env_file:
+      - ${DB_ENV}
+    ports:
+      - 5432:5432
+
+volumes:
+  seed-storage:
+  database:
+  app-build:
+  cert:

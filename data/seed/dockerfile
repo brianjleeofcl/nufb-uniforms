@@ -1,0 +1,5 @@
+FROM node:16
+WORKDIR /seed
+COPY . .
+RUN mkdir output && npm install && npm run bundle
+CMD [ "sh", "script.sh" ]

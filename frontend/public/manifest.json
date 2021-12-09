@@ -1,0 +1,40 @@
+{
+  "short_name": "NUFB Uniforms",
+  "name": "NU Football Uniform Tracker",
+  "icons": [
+    {
+      "src": "favicon.ico",
+      "sizes": "512x512 192x192 180x180 128x128 32x32",
+      "type": "image/x-icon"
+    },
+    {
+      "src": "logo128.png",
+      "type": "image/png",
+      "sizes": "128x128"
+    },
+    {
+      "src": "logo180.png",
+      "type": "image/png",
+      "sizes": "180x180"
+    },
+    {
+      "src": "logo192.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "logo512.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    },
+    {
+      "src": "logo.svg",
+      "type": "image/svg",
+      "sizes": "any"
+    }
+  ],
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#000000",
+  "background_color": "#ffffff"
+}

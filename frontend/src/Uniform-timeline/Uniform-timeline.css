@@ -1,0 +1,20 @@
+.chart-bar {
+  cursor: pointer;
+}
+
+.chart-bar rect:hover {
+  opacity: 1!important;
+}
+
+.chart-point {
+  cursor: pointer;
+}
+
+.chart-point circle:hover {
+  stroke: black!important;
+}
+
+.chart-season-label text {
+  font-size: 72pt;
+}
+

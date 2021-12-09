@@ -1,0 +1,15 @@
+body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* clear anchor tag styling */
+a {
+  color: inherit;
+  text-decoration: inherit;
+}
+
+/* allow label tag to inherit cursor styles */
+label {
+  cursor: inherit;
+}

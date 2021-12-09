@@ -1,0 +1,5 @@
+FROM golang:1.17.2
+WORKDIR /db-init
+COPY . .
+RUN go install
+CMD ["go", "run", "github.com/brianjleeofcl/nufb-uniform-stats/data/init"]

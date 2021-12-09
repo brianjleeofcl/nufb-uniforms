@@ -1,0 +1,28 @@
+version: "3.9"
+
+services:
+  frontend-build:
+    image: brianjleeofcl/nufb-uniforms-frontend
+    volumes: [app-build:/frontend/build]
+    profiles: ["build-frontend"]
+  server:
+    image: brianjleeofcl/nufb-uniforms-server
+    volumes: [app-build:/api/frontend, cert:/api/cert]
+    ports:
+      - 80:80
+      - 443:443
+    env_file:
+      - ${DB_ENV}
+      - ${API_ENV}
+  db:
+    image: postgres:14-alpine
+    volumes: [database:/var/lib/postgresql/data]
+    env_file:
+      - ${DB_ENV}
+    ports:
+      - 5432:5432
+
+volumes:
+  database:
+  app-build:
+  cert:
