@@ -6,6 +6,6 @@ RUN CGO_ENABLED=0 go build -o /build/
 FROM alpine:latest
 WORKDIR /api
 COPY --from=build /build/nufb-uniform-tracker ./
-COPY --from=build /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
+COPY --from=brianjleeofcl/nufb-uniforms-frontend:latest /build/ ./frontend/
 EXPOSE ${PORT}
 CMD ["/api/nufb-uniform-tracker"]

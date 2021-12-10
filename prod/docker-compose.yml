@@ -1,13 +1,9 @@
 version: "3.9"
 
 services:
-  frontend-build:
-    image: brianjleeofcl/nufb-uniforms-frontend
-    volumes: [app-build:/frontend/build]
-    profiles: ["build-frontend"]
   server:
     image: brianjleeofcl/nufb-uniforms-server
-    volumes: [app-build:/api/frontend, cert:/api/cert]
+    volumes: [cert:/api/cert]
     ports:
       - 80:80
       - 443:443
@@ -24,5 +20,4 @@ services:
 
 volumes:
   database:
-  app-build:
   cert:

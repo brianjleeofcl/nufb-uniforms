@@ -4,12 +4,11 @@ services:
   frontend-build:
     build: ./frontend
     image: brianjleeofcl/nufb-uniforms-frontend
-    volumes: [app-build:/frontend/build]
     profiles: ["build-frontend"]
   server:
     build: ./api
     image: brianjleeofcl/nufb-uniforms-server
-    volumes: [app-build:/api/frontend, cert:/api/cert]
+    volumes: [cert:/api/cert]
     ports:
       - 80:80
       - 443:443
@@ -41,5 +40,4 @@ services:
 volumes:
   seed-storage:
   database:
-  app-build:
   cert:

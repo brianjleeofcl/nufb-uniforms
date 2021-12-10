@@ -4,6 +4,6 @@ COPY . .
 RUN npm i && npm run build
 
 FROM alpine:latest
-WORKDIR /frontend
-COPY --from=prod-build /tmp/build ./build
-CMD ["echo"]
+WORKDIR /build
+COPY --from=prod-build /tmp/build/ ./
+CMD ["ls", "-la"]
