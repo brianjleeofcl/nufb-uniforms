@@ -14,6 +14,9 @@ func getDBURL() string {
 	}
 
 	network := os.Getenv("DB_IMG")
+	if _, dev := os.LookupEnv("LOCAL_DB"); dev {
+		network = "localhost"
+	}
 	dbName := os.Getenv("POSTGRES_DB")
 	user := os.Getenv("POSTGRES_USER")
 	password := os.Getenv("POSTGRES_PASSWORD")
