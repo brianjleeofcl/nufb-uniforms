@@ -75,6 +75,10 @@ function formatData(data) {
   const opTotalRec = op.record.find(rec => rec.type === 'total');
   const [opWin, opLoss] = opTotalRec ? opTotalRec.displayValue.split('-') : [];
 
+  const city = gameInfo.venue.address.state
+    ? `${gameInfo.venue.address.city}, ${gameInfo.venue.address.state}`
+    : gameInfo.venue.address.city;
+
   const res = {
     final: header.competitions[0].status.type.completed,
     grassField: gameInfo.venue?.grass,
@@ -84,7 +88,7 @@ function formatData(data) {
     gameDate: header.competitions[0].date,
     home: nu.homeAway === 'home',
     stadium: gameInfo.venue.fullName,
-    city: `${gameInfo.venue.address.city}, ${gameInfo.venue.address.state}`,
+    city,
     zip: gameInfo.venue.address.zipCode,
     ranking: nu.rank,
     opponentRanking: op.rank,

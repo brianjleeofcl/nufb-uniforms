@@ -80,7 +80,7 @@ function sendData(data) {
     const result = JSON.stringify(data);
     const user = process.env["USER"];
     const password = process.env["PASSWORD"];
-    const url = `${root}/api/game-table/season/`;
+    const url = `${root}/api/game-table/season`;
     const req = https.request(url, {
       method: 'PATCH',
       auth: `${user}:${password}`,
