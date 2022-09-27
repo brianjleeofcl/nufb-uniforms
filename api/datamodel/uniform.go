@@ -39,23 +39,31 @@ func (u Uniform) GetPointerMap() map[string]interface{} {
 func (u Uniform) GetColumns(selection []string) []string {
 	columns := make([]string, len(selection))
 	for i, v := range selection {
-		columns[i] = uniformColumns[v]
+		columns[i] = uniformColumns[v].column
 	}
 	return columns
 }
 
-var uniformColumns = map[string]string{
-	"helmetColor":       "helmet_color",
-	"jerseyColor":       "jersey_color",
-	"pantsColor":        "pants_color",
-	"firstPlayed":       "first_played",
-	"lastPlayed":        "last_played",
-	"wins":              "wins",
-	"losses":            "losses",
-	"total":             "total",
-	"gameData":          "game_data",
-	"winPercent":        "win_percent",
-	"uniformVariations": "uniform_variations",
+func (u Uniform) CheckFilter(name string) bool {
+	return uniformColumns[name].sqlMapper != nil
+}
+
+func (u Uniform) GetSQLMapper(field string) func([]string) (func(int) (int, string), interface{}, error) {
+	return uniformColumns[field].sqlMapper
+}
+
+var uniformColumns = map[string]SQLFilterDefinition{
+	"helmetColor":       {column: "helmet_color", sqlMapper: SQLStringEqual("helmet_color")},
+	"jerseyColor":       {column: "jersey_color", sqlMapper: SQLStringEqual("jersey_color")},
+	"pantsColor":        {column: "pants_color", sqlMapper: SQLStringEqual("pants_color")},
+	"firstPlayed":       {column: "first_played", sqlMapper: nil},
+	"lastPlayed":        {column: "last_played", sqlMapper: nil},
+	"wins":              {column: "wins", sqlMapper: nil},
+	"losses":            {column: "losses", sqlMapper: nil},
+	"total":             {column: "total", sqlMapper: SQLNumberInequal("total")},
+	"gameData":          {column: "game_data", sqlMapper: nil},
+	"winPercent":        {column: "win_percent", sqlMapper: SQLNumberInequal("win_percent")},
+	"uniformVariations": {column: "uniform_variations", sqlMapper: nil},
 }
 
 var UniformSelectionLevel = map[string][]string{

@@ -87,7 +87,7 @@ func (g GameDetailTemplate) GetExecStatement() (insert string, values []interfac
 	}
 	vars := make([]string, len(cols))
 	for i, v := range cols {
-		vars[i] = fmt.Sprintf("%s = $%d", gameColumns[v], i+1)
+		vars[i] = fmt.Sprintf("%s = $%d", gameColumns[v].column, i+1)
 	}
 
 	insert = fmt.Sprintf(

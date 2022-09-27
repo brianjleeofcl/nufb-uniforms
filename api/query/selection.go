@@ -14,7 +14,7 @@ type Selection struct {
 	Args       []interface{}
 }
 
-func newSelection(dest datamodel.Selectable, selection []string, filter QueryFilter) *Selection {
+func newSelection(dest datamodel.Selectable, selection []string, filter SQLFilter) *Selection {
 	s := new(Selection)
 	s.Identities = selection
 

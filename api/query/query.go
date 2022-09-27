@@ -9,66 +9,77 @@ import (
 	"github.com/jackc/pgx/v4"
 )
 
-func QueryGameSummary(ctx context.Context, top, skip int) []byte {
+func QueryGameSummary(ctx context.Context, rowRange string, query map[string][]string) ([]byte, error) {
 	var dest datamodel.Game
-	filter := Filter{
-		SingleRowFilter{map[string]interface{}{"show": IsTrue}},
-		"full_order DESC", top, skip,
+	page, err := GetPaginationFromRange("full_order DESC", rowRange)
+	if err != nil {
+		return nil, err
 	}
-	selection := newSelection(dest, datamodel.GameSummarySelection, filter)
+	filter, err := NewResultFilterFromQueryParam(dest, query)
+	if err != nil {
+		return nil, err
+	}
+	selection := newSelection(dest, datamodel.GameSummarySelection, Filter{filter, page})
 
-	return queryJSONRows(ctx, selection)
+	return queryJSONRows(ctx, selection), err
 }
 
-func QueryGameDetail(ctx context.Context, year, week int) []byte {
+func QueryGameDetail(ctx context.Context, year, week string) ([]byte, error) {
 	var dest datamodel.Game
-	filter := SingleRowFilter{map[string]interface{}{"season": year, "week": week}}
+	filter, err := FilterGameResultsFromDate(year, week)
+	if err != nil {
+		return nil, err
+	}
 	selection := newSelection(dest, datamodel.GameDetailSelection, filter)
 
-	return queryJSONRow(ctx, selection)
+	return queryJSONRow(ctx, selection), nil
 }
 
 func QueryLatestGame(ctx context.Context) []byte {
 	var dest datamodel.Game
-	filter := Filter{
-		SingleRowFilter{map[string]interface{}{"helmet_color": IsNotNull}},
-		"full_order DESC", 1, 0,
-	}
+	showTrue, _ := NewResultFilterFromKeyValues(dest, map[string]string{"show": "true"})
+
+	filter := Filter{showTrue, GetFirstInOrder("full_order DESC")}
 	selection := newSelection(dest, datamodel.GameDetailSelection, filter)
 
 	return queryJSONRow(ctx, selection)
 }
 
-func QueryGameID(ctx context.Context, season, week int) []byte {
+func QueryGameID(ctx context.Context, season, week string) ([]byte, error) {
 	var dest datamodel.Game
-	filter := SingleRowFilter{map[string]interface{}{"season": season, "week": week}}
+	filter, err := FilterGameResultsFromDate(season, week)
+	if err != nil {
+		return nil, err
+	}
 	selection := newSelection(dest, []string{"gameID", "gameESPNID"}, filter)
 
-	return queryJSONRow(ctx, selection)
+	return queryJSONRow(ctx, selection), err
 }
 
 func QueryUniforms(ctx context.Context) []byte {
 	var dest datamodel.Uniform
-	filter := Filter{SingleRowFilter{}, "last_played DESC", 0, 0}
-	selection := newSelection(dest, datamodel.UniformListSelection, filter)
+	selection := newSelection(dest, datamodel.UniformListSelection, ListAllInOrder("last_played DESC"))
 
 	return queryJSONRows(ctx, selection)
 }
 
-func QueryUniformDetail(ctx context.Context, helmet, jersey, pants, level string) []byte {
+func QueryUniformDetail(ctx context.Context, helmet, jersey, pants, level string) ([]byte, error) {
 	var dest datamodel.Uniform
-	filter := SingleRowFilter{map[string]interface{}{
+	filter, err := NewResultFilterFromKeyValues(dest, map[string]string{
 		"helmet_color": helmet, "jersey_color": jersey, "pants_color": pants,
-	}}
+	})
+	if err != nil {
+		return nil, err
+	}
+
 	selection := newSelection(dest, datamodel.UniformSelectionLevel[level], filter)
 
-	return queryJSONRow(ctx, selection)
+	return queryJSONRow(ctx, selection), err
 }
 
 func QueryUniformTimeline(ctx context.Context) []byte {
 	var dest datamodel.Uniform
-	filter := Filter{SingleRowFilter{}, "first_played DESC", 0, 0}
-	selection := newSelection(dest, datamodel.UniformTimelineSelection, filter)
+	selection := newSelection(dest, datamodel.UniformTimelineSelection, ListAllInOrder("first_played DESC"))
 
 	return queryJSONRows(ctx, selection)
 }

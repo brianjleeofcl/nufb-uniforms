@@ -36,23 +36,12 @@ func queryHandler(dataQuery func(req *http.Request) ([]byte, error)) http.Handle
 }
 
 var gameSummaryHandler = queryHandler(func(req *http.Request) ([]byte, error) {
-	limit, offset, err := parseRangeParam(urlParam{"range"}.getVal(req))
-	if err != nil {
-		return nil, err
-	}
-
-	return query.QueryGameSummary(req.Context(), limit, offset), nil
+	queryParam := req.URL.Query()
+	return query.QueryGameSummary(req.Context(), urlParam{"range"}.getVal(req), queryParam)
 })
 
 var gameDetailHandler = queryHandler(func(req *http.Request) ([]byte, error) {
-	season, week, err := parseGameSeasonWeek(
-		urlParam{"season"}.getVal(req),
-		urlParam{"week"}.getVal(req),
-	)
-	if err != nil {
-		return nil, err
-	}
-	return query.QueryGameDetail(req.Context(), season, week), nil
+	return query.QueryGameDetail(req.Context(), urlParam{"season"}.getVal(req), urlParam{"week"}.getVal(req))
 })
 
 var latestGameHandler = queryHandler(func(req *http.Request) ([]byte, error) {
@@ -60,14 +49,7 @@ var latestGameHandler = queryHandler(func(req *http.Request) ([]byte, error) {
 })
 
 var gameIDHandler = queryHandler(func(req *http.Request) ([]byte, error) {
-	season, week, err := parseGameSeasonWeek(
-		urlParam{"season"}.getVal(req),
-		urlParam{"week"}.getVal(req),
-	)
-	if err != nil {
-		return nil, err
-	}
-	return query.QueryGameID(req.Context(), season, week), nil
+	return query.QueryGameID(req.Context(), urlParam{"season"}.getVal(req), urlParam{"week"}.getVal(req))
 })
 
 var uniformListHandler = queryHandler(func(req *http.Request) ([]byte, error) {
@@ -75,16 +57,12 @@ var uniformListHandler = queryHandler(func(req *http.Request) ([]byte, error) {
 })
 
 var uniformDetailHanlder = queryHandler(func(req *http.Request) ([]byte, error) {
-	helmet := urlParam{"helmet"}.getVal(req)
-	jersey := urlParam{"jersey"}.getVal(req)
-	pants := urlParam{"pants"}.getVal(req)
-
 	selectLevel := urlParam{"selection"}.getVal(req)
 	if selectLevel != "summary" && selectLevel != "detail" {
 		return nil, errors.New("invalid selection")
 	}
 
-	return query.QueryUniformDetail(req.Context(), helmet, jersey, pants, selectLevel), nil
+	return query.QueryUniformDetail(req.Context(), urlParam{"helmet"}.getVal(req), urlParam{"jersey"}.getVal(req), urlParam{"pants"}.getVal(req), selectLevel)
 })
 
 var uniformTimelineHandler = queryHandler(func(req *http.Request) ([]byte, error) {
