@@ -9,15 +9,17 @@ import (
 )
 
 func NewPaginationFilter(kv map[string][]string) (p PaginationFilter, err error) {
-	p.OrderBy = kv["orderBy"][0]
-	if offset := kv["offset"][0]; len(offset) > 0 {
-		p.Offset, err = strconv.Atoi(offset)
+	if orderBy := kv["orderBy"]; len(orderBy) > 0 {
+		p.OrderBy = kv["orderBy"][0]
+	}
+	if offset := kv["offset"]; len(offset) > 0 {
+		p.Offset, err = strconv.Atoi(offset[0])
 		if err != nil {
 			return PaginationFilter{}, err
 		}
 	}
-	if limit := kv["limit"][0]; len(limit) > 0 {
-		p.Limit, err = strconv.Atoi(limit)
+	if limit := kv["limit"]; len(limit) > 0 {
+		p.Limit, err = strconv.Atoi(limit[0])
 		if err != nil {
 			return PaginationFilter{}, err
 		}
@@ -52,18 +54,6 @@ func GetFirstInOrder(orderBy string) (p PaginationFilter) {
 	return p
 }
 
-// func NewResultFilter(s datamodel.Filterable, u url.Values, defaults map[string]string) (ResultFilter, error) {
-// 	input, err := NewResultFilterFromQueryParam(s, u)
-// 	if err != nil {
-// 		return ResultFilter{}, err
-// 	}
-// 	coded, err2 := NewResultFilterFromKeyValues(s, defaults)
-// 	if err2 != nil {
-// 		return ResultFilter{}, err
-// 	}
-// 	return merge(coded, input), nil
-// }
-
 func NewResultFilterFromKeyValues(s datamodel.Filterable, kv map[string]string) (r ResultFilter, err error) {
 	for param, value := range kv {
 		if s.CheckFilter(param) {
@@ -77,6 +67,18 @@ func NewResultFilterFromKeyValues(s datamodel.Filterable, kv map[string]string) 
 		}
 	}
 	return r, err
+}
+
+func NewFilterFromQueryParam(s datamodel.Filterable, u url.Values) (f Filter, err error) {
+	f.ResultFilter, err = NewResultFilterFromQueryParam(s, u)
+	if err != nil {
+		return Filter{}, err
+	}
+	f.PaginationFilter, err = NewPaginationFilter(u)
+	if err != nil {
+		return Filter{}, err
+	}
+	return f, err
 }
 
 func NewResultFilterFromQueryParam(s datamodel.Filterable, u url.Values) (r ResultFilter, err error) {
@@ -98,31 +100,3 @@ func FilterGameResultsFromDate(season, week string) (ResultFilter, error) {
 	var dest datamodel.Game
 	return NewResultFilterFromKeyValues(dest, map[string]string{"season": season, "week": week})
 }
-
-// func merge(base Filter, override Filter) Filter {
-// 	filter := map[string]FilterColumn{}
-// 	for _, v := range base.f {
-// 		filter[v.Param] = v
-// 	}
-// 	for _, v := range override.ValueFilter {
-// 		filter[v.Param] = v
-// 	}
-// 	values := []Filter{}
-// 	for _, v := range filter {
-// 		values = append(values, v)
-// 	}
-// 	orderBy := base.OrderBy
-// 	if len(override.OrderBy) > 0 {
-// 		orderBy = override.OrderBy
-// 	}
-// 	offset := base.Offset
-// 	if override.Offset > 0 {
-// 		offset = override.Offset
-// 	}
-// 	limit := base.Limit
-// 	if override.Limit > 0 {
-// 		limit = override.Limit
-// 	}
-
-// 	return ResultFilter{values, orderBy, offset, limit}
-// }

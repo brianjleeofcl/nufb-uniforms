@@ -15,11 +15,12 @@ func QueryGameSummary(ctx context.Context, rowRange string, query map[string][]s
 	if err != nil {
 		return nil, err
 	}
-	filter, err := NewResultFilterFromQueryParam(dest, query)
+	filter, err := NewFilterFromQueryParam(dest, query)
 	if err != nil {
 		return nil, err
 	}
-	selection := newSelection(dest, datamodel.GameSummarySelection, Filter{filter, page})
+	merged := filter.Upsert(Filter{ResultFilter{}, page})
+	selection := newSelection(dest, datamodel.GameSummarySelection, merged)
 
 	return queryJSONRows(ctx, selection), err
 }
