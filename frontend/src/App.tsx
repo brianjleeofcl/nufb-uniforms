@@ -1,6 +1,6 @@
 import React, { useContext, useRef } from 'react';
 import { Outlet, Route, Routes } from 'react-router-dom';
-import { Box, BoxProps, Grommet, Main, ResponsiveContext } from 'grommet';
+import { Box, BoxProps, Grommet, Heading, Main, Paragraph, ResponsiveContext } from 'grommet';
 import { theme } from './grommet/theme';
 import { NavHeader, NAV_HEIGHT } from './Nav-header/Nav-header';
 import { Timeline } from './Timeline/Timeline';
@@ -11,6 +11,7 @@ import { UniformInfoView } from './Uniform-info-view/Uniform-info-view';
 import { UniformTimeline } from './Uniform-timeline/Uniform-timeline';
 import { AboutPage } from './About-page/About-page';
 import { sizeIsS } from './grommet/utils';
+import { Alert } from 'grommet-icons';
 import './App.css';
 
 const ResponsiveContainer = styled<React.FC<BoxProps & { respSize: string }>>(Box)`
@@ -55,7 +56,12 @@ const UniformTimelineContainer = () => {
   const containerRef = useRef() as React.MutableRefObject<HTMLDivElement> ;
 
   return <MainContent ref={containerRef}>
-    <UniformTimeline parentRef={containerRef} />
+    <Box align="center" pad="50px">
+      <Alert/>
+      <Heading size="3">Sorry, under construction</Heading>
+      <Paragraph>Anyone know of a charting library that's maintained? I'm all ears at this point.</Paragraph>
+    </Box>
+    {/* <UniformTimeline parentRef={containerRef} /> */}
   </MainContent>
 }
 
