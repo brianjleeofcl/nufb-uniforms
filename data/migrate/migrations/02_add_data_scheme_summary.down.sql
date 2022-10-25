@@ -1,0 +1,1 @@
+DROP MATERIALIZED VIEW data_summary;
