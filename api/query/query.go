@@ -9,6 +9,20 @@ import (
 	"github.com/jackc/pgx/v4"
 )
 
+func QueryDataSummary(ctx context.Context) ([]byte, error) {
+	conx, err := ConnectDB(ctx)
+	if err != nil {
+		log.Panic(err)
+	}
+
+	var summary []byte
+	if err = conx.QueryRow(ctx, "SELECT summary FROM data_summary LIMIT 1").Scan(&summary); err != nil {
+		log.Panic(err)
+	}
+
+	return summary, err
+}
+
 func QueryGameSummary(ctx context.Context, rowRange string, query map[string][]string) ([]byte, error) {
 	var dest datamodel.Game
 	page, err := GetPaginationFromRange("full_order DESC", rowRange)
@@ -19,7 +33,8 @@ func QueryGameSummary(ctx context.Context, rowRange string, query map[string][]s
 	if err != nil {
 		return nil, err
 	}
-	merged := filter.Upsert(Filter{ResultFilter{}, page})
+	showTrue, _ := NewResultFilterFromKeyValues(dest, map[string]string{"show": "true"})
+	merged := filter.Upsert(Filter{showTrue, page})
 	selection := newSelection(dest, datamodel.GameSummarySelection, merged)
 
 	return queryJSONRows(ctx, selection), err
@@ -90,16 +105,12 @@ func queryJSONRow(ctx context.Context, selection *Selection) []byte {
 	if err != nil {
 		log.Panic(err)
 	}
-	err = conx.QueryRow(
-		ctx,
-		selection.Query,
-		selection.Args...,
-	).Scan(*selection.Pointers...)
-	if err == pgx.ErrNoRows {
+
+	row := conx.QueryRow(ctx, selection.Query, selection.Args...)
+	if err = row.Scan(*selection.Pointers...); err == pgx.ErrNoRows {
 		res, _ := json.Marshal(nil)
 		return res
-	}
-	if err != nil {
+	} else if err != nil {
 		log.Panic(err)
 	}
 

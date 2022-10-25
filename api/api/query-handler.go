@@ -35,6 +35,10 @@ func queryHandler(dataQuery func(req *http.Request) ([]byte, error)) http.Handle
 	}
 }
 
+var dataSummaryHandler = queryHandler(func(req *http.Request) ([]byte, error) {
+	return query.QueryDataSummary(req.Context())
+})
+
 var gameSummaryHandler = queryHandler(func(req *http.Request) ([]byte, error) {
 	queryParam := req.URL.Query()
 	return query.QueryGameSummary(req.Context(), urlParam{"range"}.getVal(req), queryParam)

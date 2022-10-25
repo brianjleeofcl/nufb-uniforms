@@ -24,6 +24,8 @@ type Game struct {
 	opponentSeasonWins   int
 	opponentSeasonLosses int
 	home                 bool
+	conferenceGame       bool
+	divisionGame         bool
 	helmetColor          string
 	jerseyColor          string
 	pantsColor           string
@@ -94,6 +96,8 @@ func (g Game) GetPointerMap() map[string]interface{} {
 		"opponentSeasonWins":   g.opponentSeasonWins,
 		"opponentSeasonLosses": g.opponentSeasonLosses,
 		"home":                 g.home,
+		"conferenceGame":       g.conferenceGame,
+		"divisionGame":         g.divisionGame,
 		"helmetColor":          g.helmetColor,
 		"jerseyColor":          g.jerseyColor,
 		"pantsColor":           g.pantsColor,
@@ -177,6 +181,8 @@ var gameColumns = map[string]SQLFilterDefinition{
 	"opponentSeasonWins":   {column: "opponent_season_wins", sqlMapper: nil},
 	"opponentSeasonLosses": {column: "opponent_season_losses", sqlMapper: nil},
 	"home":                 {column: "home", sqlMapper: SQLBoolean("home")},
+	"conferenceGame":       {column: "conference_game", sqlMapper: SQLBoolean("conference_game")},
+	"divisionGame":         {column: "division_game", sqlMapper: SQLBoolean("division_game")},
 	"helmetColor":          {column: "helmet_color", sqlMapper: SQLStringEqual("helmet_color")},
 	"jerseyColor":          {column: "jersey_color", sqlMapper: SQLStringEqual("jersey_color")},
 	"pantsColor":           {column: "pants_color", sqlMapper: SQLStringEqual("jersey_color")},

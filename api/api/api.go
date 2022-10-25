@@ -19,6 +19,8 @@ func GetRouter() *chi.Mux {
 func attachRoutes(router *chi.Mux) {
 	basicAuth := middleware.BasicAuth("restricted", getBasicAuth())
 	router.Route("/api", func(r chi.Router) {
+		r.Get("/data-summary", dataSummaryHandler)
+
 		r.Route("/game", func(r chi.Router) {
 			r.Get("/", latestGameHandler)
 			r.Get("/{season}/{week}", gameDetailHandler)
