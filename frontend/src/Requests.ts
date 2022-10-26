@@ -1,5 +1,6 @@
 import { GameDetail, newGameDetail } from "./Game-detail/Game-detail-model";
 import { GameFullRawData, GameSummary, GameSummaryRawData, newGameSummary, Uniform, UniformInfo, UniformInfoResult, UniformListResult, UniformTimelineData, UniformTimelineResult } from "./Models";
+import { AppMetadata } from "./Models/App-metadata";
 
 abstract class APIRequest<T> {
   abstract get URL(): string;
@@ -8,6 +9,15 @@ abstract class APIRequest<T> {
   protected request<T extends unknown>() {
     return fetch(this.URL, { cache: 'no-cache' })
       .then(res => res.json() as T)
+  }
+}
+
+export class DataSummaryRequest extends APIRequest<AppMetadata> {
+  get URL(): string {
+    return `${this.hostURL}/data-summary`;
+  }
+  asPromise(): Promise<AppMetadata> {
+    return this.request<AppMetadata>()
   }
 }
 

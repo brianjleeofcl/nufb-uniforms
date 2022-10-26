@@ -3,6 +3,7 @@ import { Box, InfiniteScroll, ResponsiveContext } from "grommet";
 import { GameCard } from "../Game-card/Game-card";
 import { GameSummaryRequest } from "../Requests";
 import { GameSummary } from "../Models";
+import { TimelineFilter } from "./Timeline-filter";
 
 export function Timeline() {
   const size = useContext(ResponsiveContext);
@@ -15,9 +16,7 @@ export function Timeline() {
   }, [index])
 
   return <Box basis={sizedWidth} flex="grow" align="end">
-    {/* <Box>
-      filter
-    </Box> */}
+    <TimelineFilter />
     <Box width={sizedWidth} overflow={{vertical:'auto'}}>
       <InfiniteScroll items={games} onMore={() => setIndex(index + 10)} step={10}>
         {(game: GameSummary) => {
