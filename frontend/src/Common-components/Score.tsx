@@ -1,4 +1,4 @@
-import React from "react";
+import React, { ReactNode } from "react";
 import styled from "styled-components";
 
 type GameContext = { win: boolean, home: boolean, homePos: boolean };
@@ -11,7 +11,7 @@ const Loss = styled.span`
   color: red;
 `;
 
-export const Score: React.FunctionComponent<GameContext> = ({ win, home, homePos, children }) => {
+export const Score = ({ win, home, homePos, children }: GameContext & { children: ReactNode }) => {
   if (home !== homePos) {
     return <span>{ children }</span>
   }

@@ -1,6 +1,7 @@
 import { Box, Heading, ResponsiveContext, Spinner } from "grommet";
 import React, { FunctionComponent, useContext, useEffect, useState } from "react";
 import { useParams } from "react-router";
+import { useLoaderData } from "react-router-dom";
 import { Tweet } from "react-twitter-widgets";
 import styled from "styled-components";
 import { RespSizes } from "../grommet/utils";
@@ -93,12 +94,14 @@ const GameDetailLayout: FunctionComponent<{ game: GameDetail }> = ({ game }) => 
 }
 
 export const SingleGameDetail = () => {
-  const { year = '', week = '' } = useParams<'year' | 'week'>();
-  const [ game, setGame ] = useState<GameDetail>();
+  // const { year = '', week = '' } = useParams<'year' | 'week'>();
+  // const [ game, setGame ] = useState<GameDetail>();
 
-  useEffect(() => {
-    new SingleGameDetailRequest(year, week).asPromise().then(data => setGame(data));
-  }, [year, week])
+  // useEffect(() => {
+  //   new SingleGameDetailRequest(year, week).asPromise().then(data => setGame(data));
+  // }, [year, week])
+
+  const game = useLoaderData() as GameDetail
 
   return game
     ? <GameDetailLayout game={game} />

@@ -35,7 +35,7 @@ function NavLinkAlt({ children, to, altRoute, ...props }: NavLinkProps & React.R
 export const NAV_HEIGHT = "180px";
 
 export function NavHeader() {
-  const navTo = useNavigate();
+  // const navTo = useNavigate();
   const size = useContext(ResponsiveContext);
 
   return <Header pad={{top: 'medium', horizontal: 'medium', bottom: sizeIsS(size) ? 'medium' : 'none'}}
@@ -52,7 +52,7 @@ export function NavHeader() {
     </Box>
     {size === 'small' ? (
       <Menu label="Menu"
-        items={menuItems.map(({label, link})=> ({label, onClick: () => navTo(link)}))}
+        items={menuItems.map(({label, link})=> ({label, href: link}))}
       />
     ) : (
       <Nav direction="row">

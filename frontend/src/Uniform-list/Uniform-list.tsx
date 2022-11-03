@@ -52,7 +52,7 @@ export function UniformList() {
         active={sort.by === sortVal}
         onClick={() => setSort(determineSort(sortVal))}/>)
       }</Box>
-      {list.map(uniform => <UniformSummary uniform={uniform} />)
+      {list.map(uniform => <UniformSummary uniform={uniform} key={uniform.id} />)
     }</Box>
   </Box>
 }

@@ -66,6 +66,10 @@ export class Uniform implements UniformColors, UniformGameStats {
   jersey: Colors;
   pants: Colors;
 
+  get id() {
+    return `${this.helmet}-${this.jersey}-${this.pants}`;
+  }
+
   firstPlayed: Date;
   lastPlayed: Date;
   constructor(
