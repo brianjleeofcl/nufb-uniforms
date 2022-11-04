@@ -10,7 +10,7 @@ const readline = createInterface({
 });
 
 const season = process.argv[2];
-const root = process.env["ROOT"];
+const root = process.env["HOST"];
 const rsUrl = `https://site.api.espn.com/apis/site/v2/sports/football/college-football/teams/77/schedule?season=${season}`;
 const psUrl = `${rsUrl}&seasontype=3`;
 
@@ -78,9 +78,9 @@ function sendData(data) {
 
     console.log('sending data')
     const result = JSON.stringify(data);
-    const user = process.env["USER"];
-    const password = process.env["PASSWORD"];
-    const url = `${root}/api/game-table/season`;
+    const user = process.env["UPLOAD_USERNAME"];
+    const password = process.env["UPLOAD_PASSWORD"];
+    const url = `https://${root}/api/game-table/season`;
     const req = https.request(url, {
       method: 'PATCH',
       auth: `${user}:${password}`,

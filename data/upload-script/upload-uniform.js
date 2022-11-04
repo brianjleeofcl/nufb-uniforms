@@ -9,7 +9,11 @@ const readline = createInterface({
   output: process.stdout,
 });
 
-let user, password;
+
+const user = process.env["UPLOAD_USERNAME"];
+const password = process.env["UPLOAD_PASSWORD"];
+const root = process.env["HOST"];
+
 const uniform = {};
 
 const thenAsk = (query, cb, next) => {
@@ -18,9 +22,6 @@ const thenAsk = (query, cb, next) => {
     next();
   });
 }
-
-thenAsk("Upload user:", usr => user = usr, () =>
-thenAsk("Upload pwr:", pw => password = pw, () =>
 thenAsk("season:", season => uniform.season = +season, () =>
 thenAsk("week:", week => uniform.week = +week, () =>
 thenAsk("helmet:", helmet => uniform.helmetColor = helmet, () =>
@@ -35,11 +36,11 @@ thenAsk("tweetUrl:", url => uniform.tweetUrl = url.length ? url : null, () => {
   console.log(uniform);
   thenAsk(`send?[y/N]`, resp => resp === 'y' ? sendRequest() : console.log('canceled'),
   () => readline.close());
-})))))))))))));
+})))))))))));
 
 function sendRequest() {
   const result = JSON.stringify(uniform);
-  const req = https.request(argv[2], {
+  const req = https.request(`https://${root}/api/uniforms/new`, {
     auth: `${user}:${password}`,
     method: 'PUT',
     headers: {

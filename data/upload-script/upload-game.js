@@ -17,12 +17,12 @@ try {
   console.error("Bad Request");
   process.exit(1);
 }
-const root = process.env["ROOT"];
-const url = `${root}/api/game/${season}/${week}/id`;
+const root = process.env["HOST"];
+const idUrl = `https://${root}/api/game/${season}/${week}/id`;
 const parser = new StringDecoder('utf8');
 
 try {
-  const req = https.request(url, res => {
+  const req = https.request(idUrl, res => {
     let json = '';
     res.on('data', data => json += parser.write(data));
     res.on('end', () => {
@@ -133,9 +133,9 @@ function sendData(id, data) {
 
     console.log('sending data')
     const result = JSON.stringify(data);
-    const user = process.env["USER"];
-    const password = process.env["PASSWORD"];
-    const url = `${root}/api/game-table/id/${id}`;
+    const user = process.env["UPLOAD_USERNAME"];
+    const password = process.env["UPLOAD_PASSWORD"];
+    const url = `https://${root}/api/game-table/id/${id}`;
     const req = https.request(url, {
       method: 'PATCH',
       auth: `${user}:${password}`,
