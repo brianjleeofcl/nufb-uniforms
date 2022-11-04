@@ -106,7 +106,7 @@ type Filter struct {
 func (f Filter) GetSQLString() (string, []interface{}) {
 	whereClause, args := f.ResultFilter.GetSQLString()
 	f.ArgumentIndex = len(args) + 1
-	if f.ArgumentIndex == 1 {
+	if len(whereClause) == 0 {
 		return f.PaginationFilter.GetSQLString()
 	}
 
