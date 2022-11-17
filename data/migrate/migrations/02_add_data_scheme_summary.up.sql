@@ -6,5 +6,6 @@ SELECT json_build_object(
 'opponent', array_agg(distinct opponent),
 'special', array_agg(DISTINCT special) FILTER (WHERE special IS NOT NULL),
 'stadium', array_agg(DISTINCT stadium),
+'city', array_agg(DISTINCT city),
 'broadcast', array_agg(DISTINCT broadcast)
 ) AS summary FROM full_data WHERE show;
