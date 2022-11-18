@@ -1,6 +1,7 @@
 
 DROP MATERIALIZED VIEW game_view;
 DROP MATERIALIZED VIEW uniform_view;
+DROP MATERIALIZED VIEW data_summary;
 DROP VIEW full_data;
 
 CREATE VIEW full_data AS
@@ -33,6 +34,18 @@ FROM wg
 LEFT JOIN game_uniform AS gu ON wg.season = gu.season AND wg.week = gu.week
 LEFT JOIN b1g_teams AS conf ON conf.seasons @> wg.season
 JOIN l ON TRUE;
+
+CREATE MATERIALIZED VIEW data_summary AS
+SELECT json_build_object(
+'helmetColor', array_agg(DISTINCT helmet_color),
+'jerseyColor', array_agg(DISTINCT jersey_color),
+'pantsColor', array_agg(DISTINCT pants_color),
+'opponent', array_agg(distinct opponent),
+'special', array_agg(DISTINCT special) FILTER (WHERE special IS NOT NULL),
+'stadium', array_agg(DISTINCT stadium),
+'city', array_agg(DISTINCT city),
+'broadcast', array_agg(DISTINCT broadcast)
+) AS summary FROM full_data WHERE show;
 
 CREATE MATERIALIZED VIEW uniform_view AS
 WITH game_stat AS (
