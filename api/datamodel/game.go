@@ -12,6 +12,7 @@ type Game struct {
 	week                 int
 	title                NullString
 	gameDate             time.Time
+	kickoff              int
 	opponent             string
 	opponentAbbrev       string
 	opponentMascot       string
@@ -84,6 +85,7 @@ func (g Game) GetPointerMap() map[string]interface{} {
 		"regularSeason":        g.regularSeason,
 		"title":                g.title,
 		"gameDate":             g.gameDate,
+		"kickoff":              g.kickoff,
 		"opponent":             g.opponent,
 		"opponentAbbrev":       g.opponentAbbrev,
 		"opponentMascot":       g.opponentMascot,
@@ -169,6 +171,7 @@ var gameColumns = map[string]SQLFilterDefinition{
 	"show":                 {column: "show", sqlMapper: SQLBoolean("show")},
 	"title":                {column: "title", sqlMapper: nil},
 	"gameDate":             {column: "game_date", sqlMapper: nil},
+	"kickoff":              {column: "kickoff", sqlMapper: SQLNumberEqual("kickoff")},
 	"opponent":             {column: "opponent", sqlMapper: SQLStringEqual("opponent")},
 	"opponentAbbrev":       {column: "opponent_abbrev", sqlMapper: nil},
 	"opponentMascot":       {column: "opponent_mascot", sqlMapper: nil},
