@@ -167,7 +167,7 @@ var gameColumns = map[string]SQLFilterDefinition{
 	"season":               {column: "season", sqlMapper: SQLNumberEqual("season")},
 	"seasonLength":         {column: "season_length", sqlMapper: nil},
 	"regularSeason":        {column: "regular_season", sqlMapper: SQLBoolean("regular_season")},
-	"week":                 {column: "week", sqlMapper: nil},
+	"week":                 {column: "week", sqlMapper: SQLNumberEqual("week")},
 	"show":                 {column: "show", sqlMapper: SQLBoolean("show")},
 	"title":                {column: "title", sqlMapper: nil},
 	"gameDate":             {column: "game_date", sqlMapper: nil},
