@@ -1,9 +1,10 @@
-import { Box, Heading, ResponsiveContext, Spinner } from "grommet";
+import { Anchor, Box, Heading, ResponsiveContext, Spinner } from "grommet";
 import React, { FunctionComponent, useContext, useState } from "react";
+import { useHref } from "react-router-dom";
 import { useLoaderData } from "react-router-dom";
 import { Tweet } from "react-twitter-widgets";
 import styled from "styled-components";
-import { RespSizes } from "../grommet/utils";
+import { RespSizes, sizeIsS } from "../grommet/utils";
 import { UniformColors } from "../Models";
 import { UniformCard } from "../Uniform-card/Uniform-card";
 import { GameDetail } from "./Game-detail-model";
@@ -22,6 +23,7 @@ const UniformLarge = (prop: UniformColors) => <UniformCard {...prop} size={300} 
 const GameDetailLayout: FunctionComponent<{ game: GameDetail }> = ({ game }) => {
   const [ tweetLoaded, setSpinner ] = useState<boolean>(false);
   const size = useContext(ResponsiveContext);
+  const home = useHref("/")
 
   let width = 'auto', basis = 'auto',
     align: 'center' | 'start' = 'center',
@@ -47,7 +49,10 @@ const GameDetailLayout: FunctionComponent<{ game: GameDetail }> = ({ game }) => 
   }
 
   return <Box pad={{vertical: 'medium'}} align={align} basis={basis}>
-    <Heading margin={{left: '50px'}} level="3" textAlign="start" >{game.titleWithYear}</Heading>
+    <Box direction="row" align="flex-end" justify="between" width="100%" pad={{horizontal: '25px'}}>
+      <Heading level="3" textAlign="start" margin={{vertical: '0'}}>{game.titleWithYear}</Heading>
+      {sizeIsS(size) && <Anchor href={home}>&lt;&lt; Back to list</Anchor>}
+    </Box>
     <Box direction={flexDir} align={size === 'small'? 'center': 'start'} justify={justify} wrap={size === 'medium'} width="100%" pad="20px">
       <Box direction="column" basis={basis} width={width}
       justify={size === 'small' ? 'center': 'end'}>
