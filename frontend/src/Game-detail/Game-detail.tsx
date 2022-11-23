@@ -1,12 +1,10 @@
 import { Box, Heading, ResponsiveContext, Spinner } from "grommet";
-import React, { FunctionComponent, useContext, useEffect, useState } from "react";
-import { useParams } from "react-router";
+import React, { FunctionComponent, useContext, useState } from "react";
 import { useLoaderData } from "react-router-dom";
 import { Tweet } from "react-twitter-widgets";
 import styled from "styled-components";
 import { RespSizes } from "../grommet/utils";
 import { UniformColors } from "../Models";
-import { LatestGameDetailRequest, SingleGameDetailRequest } from "../Requests";
 import { UniformCard } from "../Uniform-card/Uniform-card";
 import { GameDetail } from "./Game-detail-model";
 
@@ -94,27 +92,8 @@ const GameDetailLayout: FunctionComponent<{ game: GameDetail }> = ({ game }) => 
 }
 
 export const SingleGameDetail = () => {
-  // const { year = '', week = '' } = useParams<'year' | 'week'>();
-  // const [ game, setGame ] = useState<GameDetail>();
-
-  // useEffect(() => {
-  //   new SingleGameDetailRequest(year, week).asPromise().then(data => setGame(data));
-  // }, [year, week])
-
   const game = useLoaderData() as GameDetail
 
-  return game
-    ? <GameDetailLayout game={game} />
-    : <Box width="100%" margin={{ top: '100px' }} justify="center" align="center">
-      <Spinner size="large" />
-    </Box>
-};
-
-export const LatestGameDetail = () => {
-  const [game, setGame] = useState<GameDetail>()
-  useEffect(() => {
-    new LatestGameDetailRequest().asPromise().then(data => setGame(data));
-  }, [])
   return game
     ? <GameDetailLayout game={game} />
     : <Box width="100%" margin={{ top: '100px' }} justify="center" align="center">

@@ -1,15 +1,16 @@
-import { createBrowserRouter, LoaderFunctionArgs, Params } from "react-router-dom"
+import { createBrowserRouter, LoaderFunctionArgs } from "react-router-dom"
 import { AboutPage } from "./About-page/About-page";
 import App from "./App";
 import { GameDetailPage, GamePage, LandingPage, SimplePage, UniformTimelineContainer } from "./Pages/Pages"
-import { SingleGameDetailRequest } from "./Requests";
+import { LatestGameDetailRequest, SingleGameDetailRequest } from "./Requests";
 import { UniformInfoView } from "./Uniform-info-view/Uniform-info-view";
 import { UniformList } from "./Uniform-list/Uniform-list";
 
 const routes = [
   {element: <App />, children: [
     {path: '/', element: <GamePage />, children:[
-      {index: true, element: <LandingPage />},
+      {index: true, loader:() => new LatestGameDetailRequest().asPromise(),
+        element: <LandingPage />},
       {path: '/game/:year/:week', loader: ({ params }: LoaderFunctionArgs) => {
         return new SingleGameDetailRequest(params["year"] as string, params["week"] as string).asPromise()
       }, element: <GameDetailPage />},

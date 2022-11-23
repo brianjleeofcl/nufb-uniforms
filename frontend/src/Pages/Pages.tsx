@@ -2,7 +2,7 @@ import { Box, Heading, Paragraph, ResponsiveContext } from "grommet";
 import { Alert } from "grommet-icons";
 import React, { useContext, useRef } from "react";
 import { Outlet } from "react-router-dom";
-import { LatestGameDetail, SingleGameDetail } from "../Game-detail/Game-detail";
+import { SingleGameDetail } from "../Game-detail/Game-detail";
 import { RespSizes } from "../grommet/utils";
 import { Timeline } from "../Timeline/Timeline";
 import { DetailLayout, MainContent, ReflexiveMain } from "./Page-layout";
@@ -16,7 +16,7 @@ export function SimplePage() {
 export function LandingPage() {
   return <ResponsiveContext.Consumer>
       {value => value !== RespSizes.S
-        ? <DetailLayout><LatestGameDetail /></DetailLayout>
+        ? <GameDetailPage />
         : <Timeline />}
     </ResponsiveContext.Consumer>
 }
@@ -46,5 +46,3 @@ export function UniformTimelineContainer() {
     {/* <UniformTimeline parentRef={containerRef} /> */}
   </MainContent>
 }
-
-

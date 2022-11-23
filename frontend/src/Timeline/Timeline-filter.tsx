@@ -4,8 +4,9 @@ import { Technology } from "grommet-icons";
 import { SchemeContext } from "../App";
 
 export function TimelineFilter() {
-  const [expanded, setExpansion] = useState(false)
+  const [ filter, setFilter ] = useState()
   const schema = useContext(SchemeContext)
+
 
   return <Accordion flex={false} width="100%">
     <AccordionPanel label={
