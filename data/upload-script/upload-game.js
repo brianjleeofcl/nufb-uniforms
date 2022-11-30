@@ -4,6 +4,16 @@ const https = require('https');
 const { StringDecoder } = require('string_decoder');
 const { createInterface } = require('readline');
 
+function exitWithError(err) {
+  console.error(err);
+  process.exit(1);
+}
+
+function exitGracefully(msg) {
+  console.log(msg);
+  process.exit(0);
+}
+
 const readline = createInterface({
   input: process.stdin,
   output: process.stdout,
@@ -14,8 +24,7 @@ try {
   [season, week] = process.argv[2].split('/');
   if (!season || !week) throw new Error();
 } catch {
-  console.error("Bad Request");
-  process.exit(1);
+  exitWithError(new Error("Missing or malformed argument"))
 }
 const root = process.env["HOST"];
 const idUrl = `https://${root}/api/game/${season}/${week}/id`;
@@ -32,14 +41,13 @@ try {
       getData(gameESPNID)
         .then(data => formatData(data))
         .then(formatted => sendData(gameID, formatted))
-        .catch(err => { throw err });
+        .catch(err => exitWithError(err))
     });
   });
   req.on('error', err => { throw err });
   req.end();
 } catch(err) {
-  console.error(err);
-  process.exit(1);
+  exitWithError(err)
 }
 
 function getData(id) {
@@ -96,7 +104,7 @@ function formatData(data) {
     seasonLosses: +nuLoss,
     opponentSeasonWins: +opWin,
     opponentSeasonLosses: +opLoss,
-    broadcast: header.competitions[0].broadcasts[0].media.shortName,
+    broadcast: header.competitions[0].broadcasts[0]?.media.shortName,
   };
   if (res.final) {
     res.attendance = gameInfo.attendance;
@@ -123,20 +131,39 @@ function formatData(data) {
     res.opponentScoreOT = opOT.reduce((agg, { displayValue }) => agg + +displayValue, 0);
   }
 
+  if (!res.broadcast) {
+    return fillInDataGaps(res)
+  }
+
   return res
+}
+
+function fillInDataGaps(data) {
+  return new Promise((resolve) => {
+    readline.question('broadcast? (all caps)', resp => {
+      if (resp.length) {
+        data.broadcast = resp;
+      }
+      resolve(data)
+    });
+  });
 }
 
 function sendData(id, data) {
   console.log(data);
-  readline.question(`send?[y/N]`, resp => {
-    if (resp.toLowerCase() !== 'y') return console.log('canceled');
+  readline.question('send?[y/N]', resp => {
+    if (resp.toLowerCase() !== 'y') return exitGracefully("Canceled")
+    sendRequest(id, data);
+  });
+}
 
-    console.log('sending data')
-    const result = JSON.stringify(data);
-    const user = process.env["UPLOAD_USERNAME"];
-    const password = process.env["UPLOAD_PASSWORD"];
-    const url = `https://${root}/api/game-table/id/${id}`;
-    const req = https.request(url, {
+function sendRequest(id, data) {
+  console.log('sending data')
+  const result = JSON.stringify(data);
+  const user = process.env["UPLOAD_USERNAME"];
+  const password = process.env["UPLOAD_PASSWORD"];
+  const url = `https://${root}/api/game-table/id/${id}`;
+  const req = https.request(url, {
       method: 'PATCH',
       auth: `${user}:${password}`,
       headers: {
@@ -144,13 +171,11 @@ function sendData(id, data) {
         'Content-Length': result.length,
       },
     }, res => {
-      if (res.statusCode !== 200) return console.error(res.statusCode, res.statusMessage);
+      if (res.statusCode !== 200) throw new Error(res.statusCode, res.statusMessage);
       const count = res.headers['X-Rows-Affected'];
-      console.log(`post success, ${count} rows updated`);
-      process.exit(0);
+      exitGracefully(`post success, ${count} rows updated`);
     });
-    req.on('error', err => { throw err });
-    req.write(result);
-    req.end();
-  });
+  req.on('error', err => { throw err });
+  req.write(result);
+  req.end();
 }
