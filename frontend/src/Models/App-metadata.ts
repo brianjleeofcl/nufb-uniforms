@@ -1,4 +1,5 @@
 export interface AppMetadata {
+  gameCount: number
   helmetColor: string[]
   jerseyColor: string[]
   pantsColor: string[]
@@ -9,6 +10,7 @@ export interface AppMetadata {
 }
 
 export const preloadMetadata: AppMetadata = {
+  gameCount: 0,
   helmetColor: [],
   jerseyColor: [],
   pantsColor: [],
