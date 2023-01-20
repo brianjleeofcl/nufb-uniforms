@@ -1,10 +1,11 @@
 import { createBrowserRouter, LoaderFunctionArgs } from "react-router-dom"
 import { AboutPage } from "./About-page/About-page";
 import App from "./App";
-import { GameDetailPage, GamePage, LandingPage, SimplePage, UniformTimelineContainer } from "./Pages/Pages"
-import { LatestGameDetailRequest, SingleGameDetailRequest } from "./Requests";
+import { GameDetailPage, GamePage, LandingPage, SimplePage } from "./Pages/Pages"
+import { LatestGameDetailRequest, SingleGameDetailRequest, UniformTimelineRequest } from "./Requests";
 import { UniformInfoView } from "./Uniform-info-view/Uniform-info-view";
 import { UniformList } from "./Uniform-list/Uniform-list";
+import { UniformTimelineChart } from "./Uniform-timeline-chart/Uniform-timeline-chart";
 
 const routes = [
   {element: <App />, children: [
@@ -19,7 +20,10 @@ const routes = [
       {index: true, element: <UniformList />},
       {path: ':combination', element: <UniformInfoView />},
     ]},
-    {path: '/timeline', element: <UniformTimelineContainer />},
+    {path: '/timeline-chart', element: <SimplePage/>, children: [
+      {index: true, loader: () => new UniformTimelineRequest().asPromise(),
+        element: <UniformTimelineChart />}
+    ]},
     {path: '/about', element:<AboutPage />}
   ]},
 ];

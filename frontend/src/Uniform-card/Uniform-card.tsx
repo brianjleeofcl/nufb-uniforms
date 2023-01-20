@@ -43,8 +43,9 @@ const Uniform = styled<SVGProp<{ jersey: Colors, pants: Colors, rotated?: boolea
 `;
 
 type UniformCardProp = UniformColors & { size?: number };
+type SidewaysCardProp = UniformCardProp & { x: number, y: number };
 
-export const SidewaysUniformCard: React.FunctionComponent<UniformCardProp & { x: number, y: number}> = ({helmet, jersey, pants, size = 10, x, y }) => {
+export function SidewaysUniformCard({helmet, jersey, pants, size = 10, x, y }: SidewaysCardProp) {
   const basis = `${size}px`;
   const half = `${size / 2}px`;
   return <svg width={size * 1.5} height={size} x={x} y={y}>
@@ -53,7 +54,7 @@ export const SidewaysUniformCard: React.FunctionComponent<UniformCardProp & { x:
 </svg>
 }
 
-export const UniformCard: React.FunctionComponent<UniformCardProp> = ({ helmet, jersey, pants, size = 100 }) => {
+export function UniformCard({ helmet, jersey, pants, size = 100 }: UniformCardProp) {
   const basis = `${size}px`;
   const half = `${size / 2}px`;
   return <Box basis={basis} align="center" flex={false}>

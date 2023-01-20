@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import { Box, Header, Heading, HeadingExtendedProps, Menu, Nav, ResponsiveContext } from "grommet";
-import { Link, NavLink, NavLinkProps, useMatch, useNavigate, useResolvedPath } from "react-router-dom";
+import { Link, NavLink, NavLinkProps, useMatch, useResolvedPath } from "react-router-dom";
 import styled from "styled-components";
 import './Nav-header.css';
 import { sizeIsM, sizeIsS } from "../grommet/utils";
@@ -19,7 +19,7 @@ interface MenuItem {
 
 const menuItems: MenuItem[] = [
   { label: 'Games', link: '/', altRoute: '/game/:year/:week' },
-  { label: 'Uniform Combinations', link: '/uniform' },
+  { label: 'Uniform Combinations', link: '/uniform-chart' },
   { label: 'Timeline', link: '/timeline'},
   { label: 'About', link: '/about' },
 ];
@@ -35,7 +35,6 @@ function NavLinkAlt({ children, to, altRoute, ...props }: NavLinkProps & React.R
 export const NAV_HEIGHT = "180px";
 
 export function NavHeader() {
-  // const navTo = useNavigate();
   const size = useContext(ResponsiveContext);
 
   return <Header pad={{top: 'medium', horizontal: 'medium', bottom: sizeIsS(size) ? 'medium' : 'none'}}

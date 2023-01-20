@@ -135,7 +135,7 @@ export class UniformTimelineData implements UniformColors {
     this.jersey = getColor(jersey);
     this.pants = getColor(pants);
     this.axisLabel = `${helmet}-${jersey}-${pants}`;
-    this.gameData = gameData.map(data => new SimpleGame(data));
+    this.gameData = gameData.map(data => new SimpleGame(data)).sort((a, b) => a.order - b.order);
   }
 }
 
