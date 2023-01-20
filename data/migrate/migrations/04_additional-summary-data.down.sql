@@ -2,8 +2,6 @@ DROP MATERIALIZED VIEW data_summary;
 
 CREATE MATERIALIZED VIEW data_summary AS
 SELECT json_build_object(
-    'gameCount', count(*),
-    'seasons', array_agg(DISTINCT season),
     'helmetColor', array_agg(DISTINCT helmet_color),
     'jerseyColor', array_agg(DISTINCT jersey_color),
     'pantsColor', array_agg(DISTINCT pants_color),
