@@ -1,0 +1,21 @@
+.rendered-data circle {
+  cursor: pointer;
+}
+.rendered-data rect {
+  fill-opacity: .25;
+}
+
+.rendered-data > svg {
+  position: sticky;
+  left: 0;
+}
+
+.seasons rect {
+  fill: #4E2A84;
+  fill-opacity: .5;
+}
+
+.seasons text {
+  position: sticky;
+  bottom: 10px;
+}

@@ -20,10 +20,8 @@ const routes = [
       {index: true, element: <UniformList />},
       {path: ':combination', element: <UniformInfoView />},
     ]},
-    {path: '/timeline-chart', element: <SimplePage/>, children: [
-      {index: true, loader: () => new UniformTimelineRequest().asPromise(),
-        element: <UniformTimelineChart />}
-    ]},
+    {path: '/timeline-chart', element: <UniformTimelineChart />,
+      loader: () => new UniformTimelineRequest().asPromise()},
     {path: '/about', element:<AboutPage />}
   ]},
 ];
