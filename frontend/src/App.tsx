@@ -1,10 +1,9 @@
-import React, { createContext, useEffect, useState } from 'react';
+import { createContext, useEffect, useState } from 'react';
 import { Outlet } from 'react-router-dom';
 import { Box, BoxExtendedProps, Grommet, ResponsiveContext } from 'grommet';
 import { theme } from './grommet/theme';
 import { NavHeader } from './Nav-header/Nav-header';
 import styled from 'styled-components';
-// import { UniformTimeline } from './Uniform-timeline/Uniform-timeline';
 import { sizeIsS } from './grommet/utils';
 import './App.css';
 import { preloadMetadata } from './Models/App-metadata';
@@ -12,7 +11,7 @@ import { DataSummaryRequest } from './Requests';
 
 export const SchemeContext = createContext(preloadMetadata)
 
-function App() {
+export function App() {
   const [dataSummary, setScheme] = useState(preloadMetadata)
   useEffect(() => {
     new DataSummaryRequest().asPromise().then(data => setScheme(data))
@@ -46,5 +45,3 @@ ${(props) =>  sizeIsS(props.respSize)
   `
 }
 `;
-
-export default App;

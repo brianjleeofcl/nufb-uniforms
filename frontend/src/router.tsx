@@ -1,6 +1,6 @@
 import { createBrowserRouter, LoaderFunctionArgs } from "react-router-dom"
 import { AboutPage } from "./About-page/About-page";
-import App from "./App";
+import { App } from "./App";
 import { GameDetailPage, GamePage, LandingPage, SimplePage } from "./Pages/Pages"
 import { LatestGameDetailRequest, SingleGameDetailRequest, UniformTimelineRequest } from "./Requests";
 import { UniformInfoView } from "./Uniform-info-view/Uniform-info-view";

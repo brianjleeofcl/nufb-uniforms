@@ -15,12 +15,13 @@ interface MenuItem {
   label: string,
   link: string,
   altRoute?: string,
+  end?: boolean,
 };
 
 const menuItems: MenuItem[] = [
   { label: 'Games', link: '/', altRoute: '/game/:year/:week' },
-  { label: 'Uniform Combinations', link: '/uniform-chart' },
-  { label: 'Timeline', link: '/timeline'},
+  { label: 'Uniform Combinations', link: '/uniform' },
+  { label: 'Timeline', link: '/timeline-chart'},
   { label: 'About', link: '/about' },
 ];
 
@@ -55,9 +56,9 @@ export function NavHeader() {
       />
     ) : (
       <Nav direction="row">
-        {menuItems.map(({label, link, altRoute}) => {
+        {menuItems.map(({label, link, altRoute, end}) => {
           return altRoute
-          ? <NavLinkAlt to={link} key={label} altRoute={altRoute}>{label}</NavLinkAlt>
+          ? <NavLinkAlt to={link} key={label} altRoute={altRoute} end={end}>{label}</NavLinkAlt>
           : <NavLink to={link} key={label}
             className={({isActive}) => isActive  ? "nav-link-active" : ""}>
             {label}
