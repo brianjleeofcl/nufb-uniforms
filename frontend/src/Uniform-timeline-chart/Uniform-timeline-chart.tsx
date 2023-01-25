@@ -23,7 +23,7 @@ export function UniformTimelineChart() {
   const [seasonMap] = seasonLengths;
   let seasonCount = 0;
 
-  const chartWidth = gameCount * BAR_INCREMENT + LABEL_OFFSET;
+  const chartWidth = gameCount * BAR_INCREMENT + LABEL_OFFSET + BAR_INCREMENT;
   const chartHeight = result.length * BAR_HEIGHT + AXIS_OFFSET;
 
   // Scroll rerender
@@ -44,16 +44,23 @@ export function UniformTimelineChart() {
               const offset = (seasonCount * BAR_INCREMENT + LABEL_OFFSET)
               const seasonLength = seasonMap[season];
               seasonCount += seasonLength;
+              const seasonWidth = seasonLength * BAR_INCREMENT;
               return <g key={season} className="seasons">
                 {
                   i % 2 === 0
-                  ? <rect x={offset} y="0" width={seasonLength * BAR_INCREMENT} height={chartHeight}/>
+                  ? <rect x={offset} y="0" width={seasonWidth} height={chartHeight}/>
                   : null
                 }
                 {
                   <g className="transition" transform={`translate(0, ${scrollPosition.y + 30})`}>
-
                     <text x={offset + 5} y="0">{season}</text>
+                    <line x1={offset} x2={offset + seasonWidth} y1="0" y2="0" stroke="black" />
+                    {
+                      [...Array(seasonLength)].map((_, i) => {
+                      return <line key={`${season}-${i}`} stroke="black"
+                        x1={offset + i * BAR_INCREMENT} x2={offset + i * BAR_INCREMENT} y1="0" y2="20" />
+                      })
+                    }
                   </g>
                 }
                 </g>
