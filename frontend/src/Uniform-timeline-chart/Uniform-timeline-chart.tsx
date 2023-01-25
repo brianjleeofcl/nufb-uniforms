@@ -31,7 +31,7 @@ export function UniformTimelineChart() {
   const parentRef = useRef() as MutableRefObject<HTMLDivElement>;
   const containerRef = useRef() as MutableRefObject<any>; // Nothing really works here
   useScrollPosition(({ currPos }) => setScroll({ x: currPos.x, y: currPos.y }),
-    [], containerRef, false, 10, parentRef);
+    [], containerRef, false, 100, parentRef);
 
   return <MainContent ref={parentRef}>
     {
@@ -51,7 +51,10 @@ export function UniformTimelineChart() {
                   : null
                 }
                 {
-                  <text x={offset + 5} y={scrollPosition.y + 30}>{season}</text>
+                  <g className="transition" transform={`translate(0, ${scrollPosition.y + 30})`}>
+
+                    <text x={offset + 5} y="0">{season}</text>
+                  </g>
                 }
                 </g>
             })
@@ -61,7 +64,10 @@ export function UniformTimelineChart() {
             const start = uniform.gameData[0].order;
             const end = uniform.gameData.slice(-1)[0].order;
             return <g key={uniform.axisLabel} className="rendered-data">
-              <SidewaysUniformCard helmet={getColor(helmet)} jersey={getColor(jersey)} pants={getColor(pants)} size={50} x={scrollPosition.x} y={i * 50 + AXIS_OFFSET}/>
+              <g transform={`translate(${scrollPosition.x})`} className="transition">
+                <SidewaysUniformCard size={50} x={0} y={i * 50 + AXIS_OFFSET}
+                  helmet={getColor(helmet)} jersey={getColor(jersey)} pants={getColor(pants)} />
+              </g>
               {
                 uniform.gameData.length > 1
                   ? <rect x={start * BAR_INCREMENT + LABEL_OFFSET} y={i * BAR_HEIGHT + AXIS_OFFSET + BAR_PADDING} width={(end - start) * BAR_INCREMENT} height="40" />

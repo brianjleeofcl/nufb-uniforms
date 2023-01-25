@@ -1,3 +1,7 @@
+.transition {
+  transition: transform 300ms ease-out;
+}
+
 .rendered-data circle {
   cursor: pointer;
 }

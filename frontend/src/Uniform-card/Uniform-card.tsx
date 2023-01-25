@@ -49,9 +49,9 @@ export function SidewaysUniformCard({helmet, jersey, pants, size = 10, x, y }: S
   const basis = `${size}px`;
   const half = `${size / 2}px`;
   return <svg width={size * 1.5} height={size} x={x} y={y}>
-  <Helmet x={0} y={size / 4} helmet={helmet} width={half} height={half} rotated/>
-  <Uniform x={size / 2} y={0} jersey={jersey} pants={pants} width={basis} height={basis} rotated/>
-</svg>
+    <Helmet x={0} y={size / 4} helmet={helmet} width={half} height={half} rotated/>
+    <Uniform x={size / 2} y={0} jersey={jersey} pants={pants} width={basis} height={basis} rotated/>
+  </svg>
 }
 
 export function UniformCard({ helmet, jersey, pants, size = 100 }: UniformCardProp) {
