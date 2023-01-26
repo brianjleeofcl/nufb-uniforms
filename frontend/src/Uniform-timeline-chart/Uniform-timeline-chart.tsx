@@ -36,14 +36,14 @@ export function UniformTimelineChart() {
   // Scroll rerender
   const [scrollPosition, setScroll] = useState({ x: 0, y: 0 });
   const boundRef = useRef() as MutableRefObject<HTMLDivElement>;
-  const chartRef = useRef() as MutableRefObject<unknown>; // Nothing really works here
+  const chartRef = useRef() as MutableRefObject<HTMLElement & SVGSVGElement>;
   useScrollPosition(({ currPos }) => setScroll({ x: currPos.x, y: currPos.y }),
-    [], (chartRef as MutableRefObject<HTMLElement>), false, 100, boundRef);
+    [], chartRef, false, 100, boundRef);
 
   return <MainContent ref={boundRef}>
     {
       gameCount > 0
-        ? <svg ref={chartRef as MutableRefObject<SVGSVGElement>}
+        ? <svg ref={chartRef}
           width={`${chartWidth}px`} height={`${chartHeight}px`}
           viewBox={`0 0 ${chartWidth} ${chartHeight}`}>
           {
@@ -52,7 +52,8 @@ export function UniformTimelineChart() {
               const seasonLength = seasonMap[season];
               seasonCount += seasonLength;
               const seasonWidth = seasonLength * BAR_INCREMENT;
-              const classes = season === selectedSeason ? "seasons selected" : "seasons";
+              const selected = season === selectedSeason;
+              const classes = selected ? "seasons selected" : "seasons";
               return <g key={season} className={classes}>
                 {
                   i % 2 === 0
@@ -64,7 +65,7 @@ export function UniformTimelineChart() {
                     <text x={offset + HALF_INCREMENT} y={-BASIC_PADDING}
                       className="clickable" onClick={() => {
                         boundRef.current.scrollTo({ top: 0, behavior: 'smooth' });
-                        if (selectedSeason !== season) {
+                        if (!selected) {
                           setSeason(season)
                           setUniforms([...uniforms].sort((a, b) => {
                             const aOrder = a.seasons[season] || 0
@@ -78,7 +79,7 @@ export function UniformTimelineChart() {
                           setSeason(null)
                           setUniforms(defaultSort)
                         }
-                      }}>{season} {selectedSeason === season ? "- reset" : ""}</text>
+                      }}>{season} {selected ? "- reset" : ""}</text>
                     <line x1={offset + HALF_INCREMENT} x2={offset + seasonWidth - HALF_INCREMENT}
                       y1="0" y2="0" />
                     {
