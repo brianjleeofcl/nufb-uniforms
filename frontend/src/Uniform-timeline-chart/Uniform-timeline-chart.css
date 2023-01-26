@@ -1,10 +1,10 @@
 .transition {
   transition: transform 300ms ease-out;
 }
-
-.rendered-data circle {
+.clickable {
   cursor: pointer;
 }
+
 .rendered-data rect {
   fill-opacity: .25;
 }
@@ -12,6 +12,15 @@
 .rendered-data > svg {
   position: sticky;
   left: 0;
+}
+
+.seasons .axis {
+  stroke: black;
+}
+
+.seasons.selected .axis {
+  fill: red;
+  stroke: red;
 }
 
 .seasons rect {

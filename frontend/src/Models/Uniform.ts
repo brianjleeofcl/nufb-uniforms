@@ -127,6 +127,7 @@ export class UniformTimelineData implements UniformColors {
   pants: Colors;
   gameData: SimpleGame[];
   axisLabel: string;
+  seasons: Record<number, number> = {};
 
   constructor(
     helmet: string, jersey: string, pants: string, gameData: UniformSummaryGameData[]
@@ -135,7 +136,14 @@ export class UniformTimelineData implements UniformColors {
     this.jersey = getColor(jersey);
     this.pants = getColor(pants);
     this.axisLabel = `${helmet}-${jersey}-${pants}`;
-    this.gameData = gameData.map(data => new SimpleGame(data)).sort((a, b) => a.order - b.order);
+    this.gameData = gameData.map(data => {
+      const existingRecord = this.seasons[data.season]
+      if (!existingRecord || existingRecord > data.gameOrder) {
+        this.seasons[data.season] = data.gameOrder;
+      }
+      return new SimpleGame(data)
+    }).sort((a, b) => a.order - b.order);
+
   }
 }
 
