@@ -1,9 +1,11 @@
 import { useScrollPosition } from "@n8tb1t/use-scroll-position";
-import { Spinner } from "grommet";
+import { Box, Spinner } from "grommet";
+import { Close } from "grommet-icons";
 import { MutableRefObject, useContext, useRef, useState } from "react";
-import { useLoaderData } from "react-router-dom";
+import { useLoaderData, useNavigate } from "react-router-dom";
 import { SchemeContext } from "../App";
-import { getColor, UniformTimelineData } from "../Models";
+import { SimpleGameCard } from "../Game-card/Simple-game-card";
+import { getColor, SimpleGame, UniformTimelineData } from "../Models";
 import { MainContent } from "../Pages/Page-layout";
 import { SidewaysUniformCard } from "../Uniform-card/Uniform-card";
 import "./Uniform-timeline-chart.css";
@@ -22,6 +24,7 @@ export function UniformTimelineChart() {
   });
   const [uniforms, setUniforms] = useState<UniformTimelineData[]>(defaultSort);
   const { gameCount, seasons, seasonLengths } = useContext(SchemeContext);
+  const nav = useNavigate();
 
   const [seasonMap] = seasonLengths;
   let seasonCount = 0;
@@ -32,6 +35,8 @@ export function UniformTimelineChart() {
   // Season select
   const [selectedSeason, setSeason] = useState<number | null>(null);
 
+  // Game tooltip
+  const [selectedGame, setGame] = useState<{ game: SimpleGame, x: number, y: number } | null>(null);
 
   // Scroll rerender
   const [scrollPosition, setScroll] = useState({ x: 0, y: 0 });
@@ -62,7 +67,7 @@ export function UniformTimelineChart() {
                 }
                 {
                   <g className="transition axis" transform={`translate(0, ${scrollPosition.y + 30})`}>
-                    <text x={offset + HALF_INCREMENT} y={-BASIC_PADDING}
+                    <text x={offset + HALF_INCREMENT} y={-BASIC_PADDING} z="2"
                       className="clickable" onClick={() => {
                         boundRef.current.scrollTo({ top: 0, behavior: 'smooth' });
                         if (!selected) {
@@ -100,9 +105,10 @@ export function UniformTimelineChart() {
             const end = uniform.gameData.slice(-1)[0].order;
             return <g key={uniform.axisLabel} className="rendered-data">
               <g transform={`translate(${scrollPosition.x})`} className="transition">
-                <SidewaysUniformCard size={BAR_HEIGHT}
+                <SidewaysUniformCard size={BAR_HEIGHT} className="clickable"
                   x={BASIC_PADDING} y={i * BAR_HEIGHT + AXIS_OFFSET}
-                  helmet={getColor(helmet)} jersey={getColor(jersey)} pants={getColor(pants)} />
+                  helmet={getColor(helmet)} jersey={getColor(jersey)} pants={getColor(pants)}
+                  onClick={() => nav(`/uniform/${uniform.axisLabel}`)}/>
               </g>
               {
                 uniform.gameData.length > 1
@@ -112,16 +118,27 @@ export function UniformTimelineChart() {
                   : null
               }
               {uniform.gameData.map(game => {
-                return <circle key={game.order} r="10" fill={game.win ? "limegreen" : "red"}
+                return <circle key={game.order} className="clickable"
+                  r="10" fill={game.win ? "limegreen" : "red"}
                   cx={game.order * BAR_INCREMENT - HALF_INCREMENT + LABEL_SPACING}
-                  cy={(i + .5) * BAR_HEIGHT + AXIS_OFFSET} onClick={() => {
-                    console.log(game)
+                  cy={(i + .5) * BAR_HEIGHT + AXIS_OFFSET} onClick={(ev) => {
+                    const {x, y} = chartRef.current.getBoundingClientRect()
+                    setGame({ game, x: ev.clientX - x, y: ev.clientY - y })
                   }} />
               })}
             </g>
           })}
+
         </svg>
         : <Spinner size="xlarge" />
+    }
+    {
+      selectedGame
+        ? <Box className="tooltip" style={{left: selectedGame.x ,top: selectedGame.y}}>
+          <SimpleGameCard {...selectedGame.game}/>
+          <Close className="clickable exit" onClick={() => setGame(null)}/>
+        </Box>
+        : null
     }
   </MainContent>
 }

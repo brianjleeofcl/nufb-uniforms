@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { SVGProps, SyntheticEvent } from 'react';
 import { Box } from 'grommet';
 import styled from 'styled-components';
 import { ReactComponent as HelmetSVG } from './helmet.svg';
@@ -43,12 +43,13 @@ const Uniform = styled<SVGProp<{ jersey: Colors, pants: Colors, rotated?: boolea
 `;
 
 type UniformCardProp = UniformColors & { size?: number };
-type SidewaysCardProp = UniformCardProp & { x: number, y: number };
+type SidewaysCardProp = UniformCardProp & SVGProps<SVGSVGElement>;
 
-export function SidewaysUniformCard({helmet, jersey, pants, size = 10, x, y }: SidewaysCardProp) {
+export function SidewaysUniformCard(props: SidewaysCardProp) {
+  const {helmet, jersey, pants, size = 10 } = props;
   const basis = `${size}px`;
   const half = `${size / 2}px`;
-  return <svg width={size * 1.5} height={size} x={x} y={y}>
+  return <svg width={size * 1.5} height={size} {...props}>
     <Helmet x={0} y={size / 4} helmet={helmet} width={half} height={half} rotated/>
     <Uniform x={size / 2} y={0} jersey={jersey} pants={pants} width={basis} height={basis} rotated/>
   </svg>

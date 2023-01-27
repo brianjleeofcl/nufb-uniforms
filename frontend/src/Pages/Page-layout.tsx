@@ -6,6 +6,7 @@ import { NAV_HEIGHT } from "../Nav-header/Nav-header";
 export const MainContent = styled.div`
   flex: auto;
   overflow: auto;
+  position: relative;
 `;
 
 export const DetailLayout = styled.div`
