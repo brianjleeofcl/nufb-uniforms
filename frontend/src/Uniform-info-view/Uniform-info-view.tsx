@@ -1,7 +1,7 @@
 import { format } from "date-fns";
 import { Box, Button, Heading, Meter, ResponsiveContext, Spinner, Text } from "grommet";
 import { MarginType } from "grommet/utils";
-import React, { useContext, useState } from "react";
+import { useContext, useState } from "react";
 import { useLoaderData } from "react-router";
 import styled from "styled-components";
 import { SimpleGameCard } from "../Game-card/Simple-game-card";

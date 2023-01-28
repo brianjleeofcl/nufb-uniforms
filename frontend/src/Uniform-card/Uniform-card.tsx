@@ -1,4 +1,4 @@
-import React, { SVGProps, SyntheticEvent } from 'react';
+import { SVGProps } from 'react';
 import { Box } from 'grommet';
 import styled from 'styled-components';
 import { ReactComponent as HelmetSVG } from './helmet.svg';

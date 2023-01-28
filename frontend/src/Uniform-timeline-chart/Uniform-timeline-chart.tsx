@@ -66,15 +66,15 @@ export function UniformTimelineChart() {
                 }
                 {
                   <g className="transition axis" transform={`translate(0, ${scrollPosition.y + 30})`}>
-                    <text x={offset + HALF_INCREMENT} y={-BASIC_PADDING} z="2"
+                    <text x={offset + HALF_INCREMENT} y={-BASIC_PADDING}
                       className="clickable" onClick={() => {
                         boundRef.current.scrollTo({ top: 0, behavior: 'smooth' });
                         if (!selected) {
                           setSeason(season)
                           setUniforms([...uniforms].sort((a, b) => {
-                            const aOrder = a.seasons[season] || 0
-                            const bOrder = b.seasons[season] || 0
-                            const diff = aOrder - bOrder
+                            const aOrder = a.seasons[season] || 0;
+                            const bOrder = b.seasons[season] || 0;
+                            const diff = aOrder - bOrder;
                             if (diff * aOrder * bOrder !== 0 ) return diff;
                             else if (diff !== 0) return -diff;
                             else return a.gameData[0].order - b.gameData[0].order;
@@ -103,12 +103,6 @@ export function UniformTimelineChart() {
             const start = uniform.gameData[0].order;
             const end = uniform.gameData.slice(-1)[0].order;
             return <g key={uniform.axisLabel} className="rendered-data">
-              <g transform={`translate(${scrollPosition.x})`} className="transition">
-                <SidewaysUniformCard size={BAR_HEIGHT} className="clickable"
-                  x={BASIC_PADDING} y={i * BAR_HEIGHT + AXIS_OFFSET}
-                  helmet={getColor(helmet)} jersey={getColor(jersey)} pants={getColor(pants)}
-                  onClick={() => nav(`/uniform/${uniform.axisLabel}`)}/>
-              </g>
               {
                 uniform.gameData.length > 1
                   ? <rect width={(end - start) * BAR_INCREMENT} height="40"
@@ -125,9 +119,14 @@ export function UniformTimelineChart() {
                     setGame({ game, x: ev.clientX - x, y: ev.clientY - y })
                   }} />
               })}
+              <g transform={`translate(${scrollPosition.x})`} className="transition">
+                <SidewaysUniformCard size={BAR_HEIGHT} className="clickable"
+                  x={BASIC_PADDING} y={i * BAR_HEIGHT + AXIS_OFFSET}
+                  helmet={getColor(helmet)} jersey={getColor(jersey)} pants={getColor(pants)}
+                  onClick={() => nav(`/uniform/${uniform.axisLabel}`)}/>
+              </g>
             </g>
           })}
-
         </svg>
         : <Spinner size="xlarge" />
     }

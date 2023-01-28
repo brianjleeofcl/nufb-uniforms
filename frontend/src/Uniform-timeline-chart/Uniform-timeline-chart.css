@@ -13,9 +13,8 @@
   fill-opacity: .25;
 }
 
-.rendered-data > svg {
-  position: sticky;
-  left: 0;
+.rendered-data .clickable:hover {
+  stroke: black;
 }
 
 .seasons .axis {
