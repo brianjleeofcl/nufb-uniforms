@@ -2,7 +2,7 @@ import { format } from "date-fns";
 import { Box, Button, Heading, Meter, ResponsiveContext, Spinner, Text } from "grommet";
 import { MarginType } from "grommet/utils";
 import React, { useContext, useEffect, useState } from "react";
-import { useParams } from "react-router";
+import { useLoaderData, useParams } from "react-router";
 import styled from "styled-components";
 import { SimpleGameCard } from "../Game-card/Simple-game-card";
 import { sizeIsS } from "../grommet/utils";
@@ -27,13 +27,14 @@ const InfoList = styled.dl`
 `
 
 export function UniformInfoView() {
-  const {combination = ''} = useParams<'combination'>();
+  // const {combination = ''} = useParams<'combination'>();
+  const info = useLoaderData() as UniformInfo;
   const size = useContext(ResponsiveContext);
-  const [info, setInfo] = useState<UniformInfo>();
+  // const [info, setInfo] = useState<UniformInfo>();
   const [section, setAll] = useState(false);
-  useEffect(() => {
-    new UniformInfoRequest(combination).asPromise().then(res => setInfo(res))
-  }, [combination])
+  // useEffect(() => {
+  //   new UniformInfoRequest(combination).asPromise().then(res => setInfo(res))
+  // }, [combination])
 
   let layout: FlexDir = 'row',
     infoAlign = 'end',

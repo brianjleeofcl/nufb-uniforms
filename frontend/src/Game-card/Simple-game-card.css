@@ -1,0 +1,9 @@
+.clickable {
+  cursor: pointer;
+}
+
+.button {
+  display: block;
+  align-self: flex-start;
+  padding-left: 5px;
+}

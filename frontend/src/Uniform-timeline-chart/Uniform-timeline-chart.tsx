@@ -1,6 +1,5 @@
 import { useScrollPosition } from "@n8tb1t/use-scroll-position";
 import { Box, Spinner } from "grommet";
-import { Close } from "grommet-icons";
 import { MutableRefObject, useContext, useRef, useState } from "react";
 import { useLoaderData, useNavigate } from "react-router-dom";
 import { SchemeContext } from "../App";
@@ -134,9 +133,9 @@ export function UniformTimelineChart() {
     }
     {
       selectedGame
-        ? <Box className="tooltip" style={{left: selectedGame.x ,top: selectedGame.y}}>
-          <SimpleGameCard {...selectedGame.game}/>
-          <Close className="clickable exit" onClick={() => setGame(null)}/>
+        ? <Box style={{position: 'absolute', left: selectedGame.x ,top: selectedGame.y}}
+          background="white" width={{min: '220px'}}>
+          <SimpleGameCard {...selectedGame.game} onClose={() => setGame(null)}/>
         </Box>
         : null
     }

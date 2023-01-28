@@ -36,13 +36,3 @@
   position: sticky;
   bottom: 10px;
 }
-
-.tooltip {
-  position: absolute;
-  top: 0;
-}
-.tooltip .exit{
-  position: absolute;
-  top: 5px;
-  right: 5px;
-}
