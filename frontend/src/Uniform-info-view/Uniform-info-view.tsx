@@ -1,13 +1,12 @@
 import { format } from "date-fns";
 import { Box, Button, Heading, Meter, ResponsiveContext, Spinner, Text } from "grommet";
 import { MarginType } from "grommet/utils";
-import React, { useContext, useEffect, useState } from "react";
-import { useLoaderData, useParams } from "react-router";
+import React, { useContext, useState } from "react";
+import { useLoaderData } from "react-router";
 import styled from "styled-components";
 import { SimpleGameCard } from "../Game-card/Simple-game-card";
 import { sizeIsS } from "../grommet/utils";
 import { UniformInfo } from "../Models";
-import { UniformInfoRequest } from "../Requests";
 import { UniformCard } from "../Uniform-card/Uniform-card";
 
 type FlexDir = 'row' | 'column';
@@ -27,14 +26,9 @@ const InfoList = styled.dl`
 `
 
 export function UniformInfoView() {
-  // const {combination = ''} = useParams<'combination'>();
   const info = useLoaderData() as UniformInfo;
   const size = useContext(ResponsiveContext);
-  // const [info, setInfo] = useState<UniformInfo>();
   const [section, setAll] = useState(false);
-  // useEffect(() => {
-  //   new UniformInfoRequest(combination).asPromise().then(res => setInfo(res))
-  // }, [combination])
 
   let layout: FlexDir = 'row',
     infoAlign = 'end',
@@ -80,7 +74,7 @@ export function UniformInfoView() {
       <Box>
       </Box>
     </InfoSection>
-    <OverflowBox flex="grow">
+    <OverflowBox flex="shrink">
       {
         size !== 'small'
         ? <Heading level="4" margin={{left: "10px"}}>Uniform Variants ({info.uniformVariations.length})</Heading>
