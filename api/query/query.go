@@ -82,7 +82,7 @@ func QueryUniforms(ctx context.Context) []byte {
 func QueryUniformDetail(ctx context.Context, helmet, jersey, pants, level string) ([]byte, error) {
 	var dest datamodel.Uniform
 	filter, err := NewResultFilterFromKeyValues(dest, map[string]string{
-		"helmet_color": helmet, "jersey_color": jersey, "pants_color": pants,
+		"helmetColor": helmet, "jerseyColor": jersey, "pantsColor": pants,
 	})
 	if err != nil {
 		return nil, err
