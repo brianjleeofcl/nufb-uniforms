@@ -7,8 +7,18 @@ import '@fontsource/cooper-hewitt/700.css';
 import reportWebVitals from './reportWebVitals';
 import { RouterProvider } from 'react-router-dom';
 import { router } from './router';
+import { Provider } from 'react-redux';
+import { configureStore } from '@reduxjs/toolkit';
 
-createRoot(document.getElementById('root') as Element).render(<RouterProvider router={router} />)
+const store = configureStore({
+  reducer: () => {}
+})
+
+const App = <Provider store={store}>
+  <RouterProvider router={router} />
+</Provider>
+
+createRoot(document.getElementById('root') as Element).render(App)
 
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))
